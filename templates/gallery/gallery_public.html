@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Galerie — VIPET{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="py-16 sm:py-20 bg-cream dark:bg-dark-800 transition-colors duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-3">Galerie</p>
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+      Nos résidents <span class="text-gradient">VIP</span>
+    </h1>
+    <p class="text-lg text-gray-500 dark:text-white/50 max-w-2xl mx-auto font-body">
+      Découvrez nos installations luxueuses et nos pensionnaires heureux chez VIPET.
+    </p>
+  </div>
+</section>
+
+<!-- Gallery Grid -->
+<section class="py-16 sm:py-20 bg-white dark:bg-dark transition-colors duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {% if images %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for image in images %}
+          <div class="group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-white/5">
+            <img src="{{ image.image.url }}" alt="{{ image.title }}"
+                 class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div class="absolute bottom-0 left-0 right-0 p-6">
+                <h3 class="text-white font-heading font-semibold text-lg">{{ image.title }}</h3>
+                {% if image.description %}
+                  <p class="text-white/80 text-sm mt-1 line-clamp-2">{{ image.description }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <!-- Static gallery with brand images when no DB images -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-white/5">
+          <img src="{% static 'images/brand/persan blanc.png' %}" alt="Chat Persan Blanc"
+               class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-white font-heading font-semibold text-lg">Princesse Luna</h3>
+              <p class="text-white/80 text-sm mt-1">Chat Persan — Suite Royale</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-white/5">
+          <img src="{% static 'images/brand/husky.png' %}" alt="Husky"
+               class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-white font-heading font-semibold text-lg">King Max</h3>
+              <p class="text-white/80 text-sm mt-1">Husky Sibérien — Soins Spa</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-white/5">
+          <img src="{% static 'images/brand/galerie 3.png' %}" alt="Animal VIP"
+               class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-white font-heading font-semibold text-lg">Mimi</h3>
+              <p class="text-white/80 text-sm mt-1">Après toilettage VIP</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-white/5">
+          <img src="{% static 'images/brand/galerie 4.png' %}" alt="Animaux ensemble"
+               class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-white font-heading font-semibold text-lg">Amis pour la vie</h3>
+              <p class="text-white/80 text-sm mt-1">Moment de jeux au jardin</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-white/5">
+          <img src="{% static 'images/brand/spa.png' %}" alt="Spa"
+               class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-white font-heading font-semibold text-lg">Espace Spa</h3>
+              <p class="text-white/80 text-sm mt-1">Détente et bien-être</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-white/5">
+          <img src="{% static 'images/brand/hebergement.png' %}" alt="Suite"
+               class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-white font-heading font-semibold text-lg">Suite Royale</h3>
+              <p class="text-white/80 text-sm mt-1">Confort 5 étoiles</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

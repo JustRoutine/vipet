@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Message de {{ message.name }} — Admin VIPET{% endblock %}
+
+{% block content %}
+<div class="py-8 sm:py-12 bg-white dark:bg-dark transition-colors duration-300 min-h-[calc(100vh-10rem)]">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="mb-8">
+      <a href="{% url 'admin_contact:admin_list' %}" class="text-sm text-gray-500 dark:text-white/50 hover:text-primary transition-colors">← Boîte de réception</a>
+    </div>
+
+    <div class="bg-white dark:bg-dark-800 border border-gray-100 dark:border-white/5 rounded-2xl shadow-sm p-8">
+      <div class="flex items-center justify-between mb-6 pb-6 border-b border-gray-100 dark:border-white/5">
+        <div>
+          <h1 class="text-xl font-heading font-bold text-gray-900 dark:text-white">{{ message.subject }}</h1>
+          <p class="text-sm text-gray-500 dark:text-white/50 mt-1">
+            De <strong>{{ message.name }}</strong> · {{ message.email }}
+          </p>
+        </div>
+        <span class="text-xs text-gray-400 dark:text-white/30">{{ message.created_at|date:"d/m/Y H:i" }}</span>
+      </div>
+
+      <div class="prose prose-sm dark:prose-invert max-w-none">
+        <p class="text-gray-700 dark:text-white/70 leading-relaxed whitespace-pre-wrap">{{ message.message }}</p>
+      </div>
+
+      <div class="mt-8 pt-6 border-t border-gray-100 dark:border-white/5">
+        <a href="mailto:{{ message.email }}?subject=Re: {{ message.subject }}"
+           class="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-medium rounded-xl transition-all glow-pink">
+          Répondre par email →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

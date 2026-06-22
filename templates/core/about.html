@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}À propos — VIPET{% endblock %}
+
+{% block content %}
+<!-- About Hero -->
+<section class="relative overflow-hidden py-20 sm:py-28">
+  <div class="absolute inset-0">
+    <img src="{% static 'images/brand/building.png' %}" alt="VIPET Building"
+         class="w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-b from-white/80 via-white/60 to-white/90 dark:from-dark/80 dark:via-dark/60 dark:to-dark/90"></div>
+  </div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-3">À propos</p>
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-gray-900 dark:text-white mb-6">
+      Bienvenue chez <span class="text-gradient">VIPET</span>
+    </h1>
+    <p class="text-lg text-gray-600 dark:text-white/60 font-body max-w-2xl mx-auto">
+      Le premier hôtel de luxe pour animaux au Maroc, où chaque pensionnaire reçoit un traitement royal.
+    </p>
+  </div>
+</section>
+
+<!-- Mission Section with image -->
+<section class="py-20 sm:py-28 bg-white dark:bg-dark transition-colors duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- Text -->
+      <div>
+        <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-3">Notre mission</p>
+        <h2 class="text-3xl sm:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-6">
+          L'amour des animaux au cœur de tout
+        </h2>
+        <p class="text-gray-500 dark:text-white/50 text-lg leading-relaxed mb-6">
+          Chez VIPET, nous croyons que chaque animal mérite une expérience de luxe. Notre mission est de fournir
+          le plus haut niveau de soins, de confort et de bien-être à vos compagnons bien-aimés.
+        </p>
+        <p class="text-gray-500 dark:text-white/50 text-lg leading-relaxed">
+          Nous combinons un suivi vétérinaire professionnel avec une hospitalité cinq étoiles pour
+          créer un havre où les animaux s'épanouissent.
+        </p>
+      </div>
+      <!-- Image -->
+      <div class="rounded-2xl overflow-hidden shadow-xl">
+        <img src="{% static 'images/brand/mission.png' %}" alt="Notre mission"
+             class="w-full h-80 lg:h-96 object-cover" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- What We Offer -->
+<section class="py-24 sm:py-32 bg-white dark:bg-dark transition-colors duration-300 relative overflow-hidden">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]"></div>
+    <div class="absolute -bottom-40 -left-40 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- Section header -->
+    <div class="text-center mb-20">
+      <div class="inline-flex items-center gap-2 bg-primary/10 dark:bg-primary/20 rounded-full px-5 py-2 mb-6">
+        <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+        <span class="text-primary text-xs font-semibold uppercase tracking-widest">Ce que nous offrons</span>
+      </div>
+      <h2 class="text-4xl sm:text-5xl font-heading font-bold text-gray-900 dark:text-white">
+        Des services <span class="text-gradient">d'exception</span>
+      </h2>
+      <p class="mt-4 text-gray-500 dark:text-white/50 max-w-xl mx-auto font-body">
+        Une gamme complète de services haut de gamme, conçue pour le bien-être absolu de votre compagnon.
+      </p>
+    </div>
+
+    <!-- Services grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+
+      <!-- Suites de luxe -->
+      <div class="group relative bg-white dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
+        <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 rounded-2xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+            <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-heading font-bold text-gray-900 dark:text-white mb-3">Suites de luxe</h3>
+          <p class="text-gray-500 dark:text-white/50 text-sm leading-relaxed">
+            Chambres privées et climatisées avec literie premium et surveillance 24h/24.
+          </p>
+        </div>
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      </div>
+
+      <!-- Toilettage & Spa -->
+      <div class="group relative bg-white dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
+        <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 rounded-2xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+            <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-heading font-bold text-gray-900 dark:text-white mb-3">Toilettage & Spa</h3>
+          <p class="text-gray-500 dark:text-white/50 text-sm leading-relaxed">
+            Toilettage professionnel, bains relaxants et soins spa adaptés à chaque animal.
+          </p>
+        </div>
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      </div>
+
+      <!-- Garderie & Éducation -->
+      <div class="group relative bg-white dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
+        <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 rounded-2xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+            <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-heading font-bold text-gray-900 dark:text-white mb-3">Garderie & Éducation</h3>
+          <p class="text-gray-500 dark:text-white/50 text-sm leading-relaxed">
+            Sessions de jeux structurées et programmes d'éducation pour toutes les races.
+          </p>
+        </div>
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      </div>
+
+      <!-- Soins vétérinaires -->
+      <div class="group relative bg-white dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
+        <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 rounded-2xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+            <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-heading font-bold text-gray-900 dark:text-white mb-3">Soins vétérinaires</h3>
+          <p class="text-gray-500 dark:text-white/50 text-sm leading-relaxed">
+            Consultations vétérinaires sur place et suivi de santé pour une tranquillité totale.
+          </p>
+        </div>
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Promise / CTA -->
+<section class="py-20 sm:py-28 bg-white dark:bg-dark transition-colors duration-300 relative overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
+  </div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <h2 class="text-3xl sm:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-6">
+      Notre <span class="text-gradient">promesse</span>
+    </h2>
+    <p class="text-gray-500 dark:text-white/50 text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
+      Nous traitons chaque animal comme s'il était le nôtre. Avec une équipe dédiée de professionnels,
+      des installations de pointe et un amour sincère pour les animaux, VIPET garantit un séjour extraordinaire.
+    </p>
+    <a href="{% url 'accounts:register' %}"
+       class="inline-block bg-primary hover:bg-primary-dark text-white font-semibold px-12 py-5 rounded-full text-lg transition-all duration-300 glow-pink hover:scale-105">
+      Rejoindre VIPET
+    </a>
+  </div>
+</section>
+{% endblock %}

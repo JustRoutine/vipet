@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Messages — Admin VIPET{% endblock %}
+
+{% block content %}
+<div class="py-8 sm:py-12 bg-white dark:bg-dark transition-colors duration-300 min-h-[calc(100vh-10rem)]">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-heading font-bold text-gray-900 dark:text-white">Boîte de réception</h1>
+        <p class="text-gray-500 dark:text-white/50 text-sm mt-1">Messages de contact reçus</p>
+      </div>
+      <a href="{% url 'admin_dashboard:admin_dashboard' %}" class="text-sm text-gray-500 dark:text-white/50 hover:text-primary transition-colors">← Dashboard</a>
+    </div>
+
+    {% if object_list %}
+      <div class="space-y-3">
+        {% for msg in object_list %}
+        <a href="{% url 'admin_contact:admin_detail' msg.pk %}"
+           class="block bg-white dark:bg-dark-800 border border-gray-100 dark:border-white/5 rounded-xl p-5 hover:border-primary/30 hover:shadow-md transition-all">
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <div class="flex items-center space-x-3">
+                {% if not msg.is_read %}
+                  <span class="w-2 h-2 bg-primary rounded-full"></span>
+                {% endif %}
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white {% if not msg.is_read %}font-bold{% endif %}">{{ msg.subject }}</h3>
+              </div>
+              <p class="text-xs text-gray-500 dark:text-white/50 mt-1">{{ msg.name }} · {{ msg.email }}</p>
+              <p class="text-sm text-gray-400 dark:text-white/40 mt-2 line-clamp-1">{{ msg.message|truncatewords:20 }}</p>
+            </div>
+            <span class="text-xs text-gray-400 dark:text-white/30 whitespace-nowrap ml-4">{{ msg.created_at|date:"d/m H:i" }}</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="bg-white dark:bg-dark-800 border border-gray-100 dark:border-white/5 rounded-2xl p-16 text-center">
+        <span class="text-5xl block mb-4">✉️</span>
+        <p class="text-gray-500 dark:text-white/50">Aucun message reçu.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

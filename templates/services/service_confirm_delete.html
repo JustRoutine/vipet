@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supprimer le service — VIPET Admin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;600;700&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:   "#FF007F",
+            dark:      "#1A1A1A",
+            lightpink: "#FFE0EF",
+            gray:      "#666666",
+          },
+          fontFamily: {
+            heading: ["Bodoni Moda", "serif"],
+            body:    ["Jost", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body { font-family: "Jost", sans-serif; }
+    h1, h2, h3 { font-family: "Bodoni Moda", serif; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-lightpink py-12 px-4">
+
+  <div class="max-w-lg mx-auto">
+
+    <!-- Confirmation Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
+      <div class="text-5xl mb-4">⚠️</div>
+      <h1 class="text-2xl font-heading font-semibold text-dark mb-4">Supprimer le service</h1>
+      <p class="text-gray mb-6">
+        Êtes-vous sûr de vouloir supprimer définitivement
+        <strong class="text-dark">{{ object.name }}</strong> ?
+        Cette action est irréversible.
+      </p>
+
+      <form method="post" class="flex gap-4">
+        {% csrf_token %}
+        <button type="submit"
+                class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-lg transition-colors">
+          Oui, supprimer
+        </button>
+        <a href="{% url 'admin_dashboard:admin_dashboard' %}"
+           class="flex-1 text-center border-2 border-gray-200 text-dark font-semibold py-3 rounded-lg hover:border-gray-300 transition-colors">
+          Annuler
+        </a>
+      </form>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Live Camera — VIPET{% endblock %}
+
+{% block content %}
+<div class="py-8 sm:py-12 bg-white dark:bg-dark transition-colors duration-300 min-h-[calc(100vh-10rem)]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" x-data="liveCamera()">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10">
+      <div>
+        <div class="inline-flex items-center gap-2 bg-red-500/10 rounded-full px-4 py-1.5 mb-3">
+          <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+          <span class="text-red-500 text-xs font-semibold uppercase tracking-widest">Live</span>
+        </div>
+        <h1 class="text-2xl lg:text-3xl font-heading font-bold text-gray-900 dark:text-white">
+          Caméra en direct
+        </h1>
+        <p class="text-gray-500 dark:text-white/50 text-sm mt-1">
+          Surveillez votre compagnon en temps réel pendant son séjour
+        </p>
+      </div>
+      <a href="{% url 'client_dashboard:client_dashboard' %}"
+         class="mt-4 sm:mt-0 inline-flex items-center gap-2 text-sm text-gray-500 dark:text-white/50 hover:text-primary transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+        Retour au tableau de bord
+      </a>
+    </div>
+
+    <!-- Active Reservations with Camera Access -->
+    {% if active_reservations %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- Camera Feed (Main) -->
+      <div class="lg:col-span-2">
+        <div class="bg-gray-900 rounded-3xl overflow-hidden shadow-2xl relative aspect-video">
+          <!-- Video player container -->
+          <div id="video-container" class="w-full h-full flex items-center justify-center">
+            <!-- Loading state -->
+            <template x-if="loading">
+              <div class="text-center">
+                <div class="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+                <p class="text-white/60 text-sm">Connexion au flux vidéo...</p>
+              </div>
+            </template>
+
+            <!-- Stream active -->
+            <template x-if="streamActive && !loading">
+              <div class="w-full h-full relative">
+                <video id="live-player" class="w-full h-full object-cover" autoplay muted playsinline></video>
+                <!-- Live indicator overlay -->
+                <div class="absolute top-4 left-4 flex items-center gap-2 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1.5">
+                  <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                  <span class="text-white text-xs font-semibold">EN DIRECT</span>
+                </div>
+                <!-- Pet name overlay -->
+                <div class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2">
+                  <span class="text-white text-sm font-medium" x-text="selectedPetName"></span>
+                </div>
+                <!-- Fullscreen button -->
+                <button @click="toggleFullscreen()" class="absolute bottom-4 right-4 bg-black/50 backdrop-blur-sm rounded-full p-2 hover:bg-primary/50 transition-colors">
+                  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+                </button>
+              </div>
+            </template>
+
+            <!-- No stream / waiting -->
+            <template x-if="!streamActive && !loading">
+              <div class="text-center px-8">
+                <div class="w-20 h-20 mx-auto mb-6 bg-white/5 rounded-2xl flex items-center justify-center">
+                  <svg class="w-10 h-10 text-white/30" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/>
+                  </svg>
+                </div>
+                <p class="text-white/60 text-sm mb-2">Sélectionnez une réservation pour démarrer le flux</p>
+                <p class="text-white/30 text-xs">Le flux vidéo sera disponible une fois la caméra activée</p>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- Stream info bar -->
+        <div class="mt-4 flex items-center justify-between bg-gray-50 dark:bg-dark-800 rounded-2xl p-4 border border-gray-100 dark:border-white/5">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900 dark:text-white" x-text="selectedLocation || 'Aucune caméra sélectionnée'"></p>
+              <p class="text-xs text-gray-400 dark:text-white/40" x-text="streamActive ? 'Flux actif • Token expire dans ' + expiresIn : 'En attente de connexion'"></p>
+            </div>
+          </div>
+          <button @click="refreshStream()" x-show="streamActive"
+                  class="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 font-medium transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+            Rafraîchir
+          </button>
+        </div>
+      </div>
+
+      <!-- Sidebar: Reservations list -->
+      <div class="lg:col-span-1">
+        <h2 class="text-lg font-heading font-bold text-gray-900 dark:text-white mb-4">Mes réservations actives</h2>
+        <div class="space-y-3">
+          {% for reservation in active_reservations %}
+          <button @click="selectReservation({{ reservation.id }}, '{{ reservation.pet.name }}', '{{ reservation.service.name }}')"
+                  :class="selectedReservation == {{ reservation.id }} ? 'border-primary bg-primary/5 dark:bg-primary/10' : 'border-gray-100 dark:border-white/10 hover:border-primary/30'"
+                  class="w-full text-left p-5 rounded-2xl border transition-all duration-300 group">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                {% if reservation.pet.photo %}
+                <img src="{{ reservation.pet.photo.url }}" alt="{{ reservation.pet.name }}" class="w-12 h-12 rounded-xl object-cover"/>
+                {% else %}
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z"/></svg>
+                {% endif %}
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ reservation.pet.name }}</p>
+                <p class="text-xs text-gray-500 dark:text-white/50 truncate">{{ reservation.service.name }}</p>
+                <p class="text-xs text-gray-400 dark:text-white/40 mt-0.5">{{ reservation.start_date|date:"d M" }} — {{ reservation.end_date|date:"d M Y" }}</p>
+              </div>
+              <div :class="selectedReservation == {{ reservation.id }} ? 'text-primary' : 'text-gray-300 dark:text-white/20 group-hover:text-primary'"
+                   class="transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>
+              </div>
+            </div>
+          </button>
+          {% endfor %}
+        </div>
+
+        <!-- Info card -->
+        <div class="mt-6 p-5 bg-primary/5 dark:bg-primary/10 rounded-2xl border border-primary/10">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"/></svg>
+            <div>
+              <p class="text-sm font-medium text-gray-900 dark:text-white mb-1">Comment ça marche</p>
+              <p class="text-xs text-gray-500 dark:text-white/50 leading-relaxed">
+                Sélectionnez une réservation active pour accéder au flux vidéo en direct de la caméra installée dans l'espace de votre animal. Le token d'accès est valide pendant 2 heures.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    {% else %}
+    <!-- No active reservations -->
+    <div class="max-w-lg mx-auto text-center py-20">
+      <div class="w-24 h-24 mx-auto mb-8 bg-gray-100 dark:bg-white/5 rounded-3xl flex items-center justify-center">
+        <svg class="w-12 h-12 text-gray-300 dark:text-white/20" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/>
+        </svg>
+      </div>
+      <h2 class="text-xl font-heading font-bold text-gray-900 dark:text-white mb-3">Aucune réservation active</h2>
+      <p class="text-gray-500 dark:text-white/50 text-sm mb-8">
+        La caméra en direct est disponible uniquement pour les réservations approuvées en cours.
+        Réservez un séjour pour votre animal afin d'accéder au flux vidéo.
+      </p>
+      <a href="{% url 'reservations:reservation_create' %}"
+         class="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 shadow-lg shadow-primary/25 hover:scale-105">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        Réserver maintenant
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function liveCamera() {
+  return {
+    selectedReservation: null,
+    selectedPetName: '',
+    selectedLocation: '',
+    streamActive: false,
+    loading: false,
+    expiresIn: '',
+    hlsUrl: '',
+
+    selectReservation(reservationId, petName, serviceName) {
+      this.selectedReservation = reservationId;
+      this.selectedPetName = petName;
+      this.selectedLocation = serviceName;
+      this.startStream(reservationId);
+    },
+
+    async startStream(reservationId) {
+      this.loading = true;
+      this.streamActive = false;
+
+      try {
+        const response = await fetch('/api/v1/premium/streaming/access/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': this.getCsrf(),
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({ reservation: reservationId })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          this.hlsUrl = data.hls_stream_url;
+          this.streamActive = true;
+          this.startCountdown(data.expires_at);
+          this.initPlayer(data.hls_stream_url);
+        } else {
+          // API not yet available — show demo state
+          this.streamActive = false;
+        }
+      } catch (e) {
+        // Backend not implemented yet — show placeholder
+        this.streamActive = false;
+      }
+
+      this.loading = false;
+    },
+
+    initPlayer(url) {
+      const video = document.getElementById('live-player');
+      if (video && window.Hls && Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(video);
+      } else if (video) {
+        video.src = url;
+      }
+    },
+
+    async refreshStream() {
+      if (this.selectedReservation) {
+        await this.startStream(this.selectedReservation);
+      }
+    },
+
+    startCountdown(expiresAt) {
+      const update = () => {
+        const diff = new Date(expiresAt) - new Date();
+        if (diff <= 0) {
+          this.expiresIn = 'Expiré';
+          this.streamActive = false;
+          return;
+        }
+        const mins = Math.floor(diff / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        this.expiresIn = `${mins}m ${secs}s`;
+        setTimeout(update, 1000);
+      };
+      update();
+    },
+
+    toggleFullscreen() {
+      const container = document.getElementById('video-container');
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        container.requestFullscreen();
+      }
+    },
+
+    getCsrf() {
+      const cookie = document.cookie.split(';').find(c => c.trim().startsWith('csrftoken='));
+      return cookie ? cookie.split('=')[1] : '';
+    }
+  };
+}
+</script>
+{% endblock %}

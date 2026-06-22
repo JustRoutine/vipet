@@ -1,0 +1,48 @@
+# -----------------------------------------------------------------------
+# VIPET — Python dependency manifest
+# Pin major versions; update deliberately via pip-compile or manual review.
+# -----------------------------------------------------------------------
+
+# Core framework
+Django>=5.0,<5.2
+
+# Database
+mysqlclient>=2.2.4
+
+# REST API
+djangorestframework>=3.15.2
+djangorestframework-simplejwt>=5.3.1
+
+# Filtering
+django-filter>=24.3
+
+# Media / image handling
+Pillow>=10.4.0
+
+# Cloudinary media storage (optional; used when CLOUDINARY_* env vars are set)
+cloudinary>=1.41.0
+django-cloudinary-storage>=0.3.0
+
+# MIME type detection
+# NOTE: On macOS, libmagic must be installed first:
+#   brew install libmagic
+# If libmagic is unavailable, install 'python-magic-bin' instead (Windows/macOS pre-built):
+#   python-magic-bin>=0.4.14
+python-magic>=0.4.27
+
+# Environment variable management
+python-decouple>=3.8
+
+# Payment processing
+stripe>=7.0.0
+
+# Testing
+pytest>=8.3.3
+pytest-django>=4.9.0
+hypothesis>=6.115.3
+
+# Production / Deployment
+gunicorn>=22.0.0
+whitenoise>=6.7.0
+dj-database-url>=2.2.0
+psycopg2-binary>=2.9.9

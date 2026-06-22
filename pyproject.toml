@@ -1,0 +1,23 @@
+[tool.pytest.ini_options]
+# Use the development settings (SQLite) so tests run without a live MySQL instance.
+DJANGO_SETTINGS_MODULE = "vipet.settings.development"
+python_files  = ["tests.py", "test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--tb=short",
+    "--strict-markers",
+    "-q",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests that require a real database",
+]
+
+[tool.hypothesis]
+# Keep CI runs fast; developers can override locally with HYPOTHESIS_MAX_EXAMPLES.
+max_examples   = 100
+deriving_class = "hypothesis.strategies"
+suppress_health_check = ["too_slow"]
+# Persist interesting examples across runs so regressions are caught quickly.
+database = ".hypothesis"

@@ -1,0 +1,294 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}VIPET — Hôtel de Luxe pour Animaux{% endblock %}</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{% static 'images/brand/logo.png' %}" />
+
+  <!-- Google Fonts: Playfair Display (headings) + Jost (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS (CDN for development) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary:    "#FF007F",
+            "primary-dark": "#CC0066",
+            "primary-light": "#FF3399",
+            dark:       "#0D0D0D",
+            "dark-800": "#1A1A1A",
+            "dark-700": "#2D2D2D",
+            cream:      "#FFFAF7",
+            lightpink:  "#FFE0EF",
+            "rose-50":  "#FFF1F8",
+          },
+          fontFamily: {
+            heading: ["Playfair Display", "serif"],
+            body:    ["Jost", "sans-serif"],
+          },
+          animation: {
+            "fade-in": "fadeIn 0.8s ease-out forwards",
+            "slide-up": "slideUp 0.6s ease-out forwards",
+            "pulse-soft": "pulseSoft 3s ease-in-out infinite",
+          },
+          keyframes: {
+            fadeIn: {
+              "0%": { opacity: "0" },
+              "100%": { opacity: "1" },
+            },
+            slideUp: {
+              "0%": { opacity: "0", transform: "translateY(20px)" },
+              "100%": { opacity: "1", transform: "translateY(0)" },
+            },
+            pulseSoft: {
+              "0%, 100%": { opacity: "1" },
+              "50%": { opacity: "0.7" },
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <style>
+    body { font-family: "Jost", sans-serif; }
+    h1, h2, h3, h4 { font-family: "Playfair Display", serif; }
+
+    /* Luxurious gradient text */
+    .text-gradient {
+      background: linear-gradient(135deg, #FF007F 0%, #FF3399 50%, #FF69B4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Glow effect */
+    .glow-pink {
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.3), 0 0 40px rgba(255, 0, 127, 0.1);
+    }
+
+    /* Smooth scrolling */
+    html { scroll-behavior: smooth; }
+
+    /* Card hover effect */
+    .card-luxury {
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .card-luxury:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(255, 0, 127, 0.12);
+    }
+
+    /* Paw pattern background */
+    .paw-bg {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'%3E%3Cpath d='M32 28c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm28 0c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm-22 8c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm16 0c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm-8 10c0 5.5-4.5 10-10 10s-10-4.5-10-10c0-3 4.5-6 10-6s10 3 10 6z' fill='%23FF007F' opacity='0.04'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+    .dark .paw-bg {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'%3E%3Cpath d='M32 28c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm28 0c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm-22 8c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm16 0c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm-8 10c0 5.5-4.5 10-10 10s-10-4.5-10-10c0-3 4.5-6 10-6s10 3 10 6z' fill='%23FF007F' opacity='0.06'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="min-h-screen flex flex-col bg-white text-gray-900 dark:bg-dark dark:text-white transition-colors duration-300 paw-bg">
+
+  <!-- Navigation -->
+  <nav class="bg-white/95 dark:bg-dark-800/95 backdrop-blur-md fixed top-0 left-0 right-0 z-50 border-b border-gray-100 dark:border-white/5 shadow-sm dark:shadow-none" x-data="{ mobileOpen: false }">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <!-- Logo -->
+        <a href="{% url 'core:home' %}" class="flex items-center">
+          <img src="{% static 'images/brand/logo.png' %}" alt="VIPET" class="h-20 w-20 object-contain" />
+        </a>
+
+        <!-- Desktop nav -->
+        <div class="hidden md:flex items-center space-x-8 text-sm font-body">
+          <a href="{% url 'core:home' %}" class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors duration-300">Accueil</a>
+          <a href="{% url 'core:about' %}" class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors duration-300">À propos</a>
+          <a href="{% url 'services:service_list' %}" class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors duration-300">Services</a>
+          <a href="{% url 'gallery:gallery_public' %}" class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors duration-300">Galerie</a>
+          <a href="{% url 'contact:contact' %}" class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors duration-300">Contact</a>
+
+          <!-- Dark mode toggle -->
+          <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)"
+                  class="p-2 rounded-full text-gray-500 dark:text-white/60 hover:text-primary transition-colors"
+                  aria-label="Basculer le mode sombre">
+            <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+            <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          </button>
+
+          {% if user.is_authenticated and user.role == 'client' %}
+          <!-- Cart icon with badge -->
+          <div class="relative" x-data="cartBadge()" x-init="fetchCart()">
+            <a href="{% url 'api_cart:cart-detail' %}"
+               class="relative p-2 rounded-full text-gray-500 dark:text-white/60 hover:text-primary transition-colors"
+               aria-label="Panier">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+              </svg>
+              <!-- Badge count -->
+              <span x-show="count > 0" x-text="count"
+                    class="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm"
+                    x-cloak></span>
+            </a>
+            <!-- Mini dropdown on hover -->
+            <div x-show="count > 0" x-cloak
+                 class="hidden group-hover:block absolute right-0 top-full mt-2 bg-white dark:bg-dark-800 border border-gray-100 dark:border-white/10 rounded-xl shadow-xl p-3 min-w-[180px] text-center">
+              <p class="text-xs text-gray-500 dark:text-white/50 mb-1" x-text="count + ' article(s)'"></p>
+              <p class="text-primary font-bold text-sm" x-text="total + ' MAD'"></p>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if user.is_authenticated %}
+            <a href="{% if user.role == 'admin' %}{% url 'admin_dashboard:admin_dashboard' %}{% else %}{% url 'client_dashboard:client_dashboard' %}{% endif %}"
+               class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all duration-300 glow-pink">
+              Tableau de bord
+            </a>
+          {% else %}
+            <a href="{% url 'accounts:login' %}"
+               class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all duration-300 glow-pink">
+              Connexion
+            </a>
+          {% endif %}
+        </div>
+
+        <!-- Mobile: dark mode + menu button -->
+        <!-- Mobile: cart + dark mode + menu button -->
+        <div class="md:hidden flex items-center space-x-2">
+          {% if user.is_authenticated and user.role == 'client' %}
+          <!-- Mobile cart icon -->
+          <div class="relative" x-data="cartBadge()" x-init="fetchCart()">
+            <a href="{% url 'api_cart:cart-detail' %}"
+               class="p-2 rounded-full text-gray-500 dark:text-white/60 hover:text-primary transition-colors"
+               aria-label="Panier">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+              </svg>
+              <span x-show="count > 0" x-text="count"
+                    class="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm"
+                    x-cloak></span>
+            </a>
+          </div>
+          {% endif %}
+          <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)"
+                  class="p-2 rounded-full text-gray-500 dark:text-white/60 hover:text-primary transition-colors"
+                  aria-label="Basculer le mode sombre">
+            <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+            <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          </button>
+          <button @click="mobileOpen = !mobileOpen" class="p-2 text-gray-600 dark:text-white/70 hover:text-primary"
+                  aria-label="Basculer le menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path x-show="!mobileOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"/>
+              <path x-show="mobileOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile nav -->
+      <div x-show="mobileOpen" x-transition class="md:hidden pb-6 space-y-1 border-t border-gray-100 dark:border-white/5 pt-4">
+        <a href="{% url 'core:home' %}" class="block px-4 py-3 text-gray-600 dark:text-white/70 hover:text-primary hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg transition">Accueil</a>
+        <a href="{% url 'core:about' %}" class="block px-4 py-3 text-gray-600 dark:text-white/70 hover:text-primary hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg transition">À propos</a>
+        <a href="{% url 'services:service_list' %}" class="block px-4 py-3 text-gray-600 dark:text-white/70 hover:text-primary hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg transition">Services</a>
+        <a href="{% url 'gallery:gallery_public' %}" class="block px-4 py-3 text-gray-600 dark:text-white/70 hover:text-primary hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg transition">Galerie</a>
+        <a href="{% url 'contact:contact' %}" class="block px-4 py-3 text-gray-600 dark:text-white/70 hover:text-primary hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg transition">Contact</a>
+        {% if user.is_authenticated %}
+          <a href="{% if user.role == 'admin' %}{% url 'admin_dashboard:admin_dashboard' %}{% else %}{% url 'client_dashboard:client_dashboard' %}{% endif %}"
+             class="block px-4 py-3 text-primary font-semibold">Tableau de bord</a>
+        {% else %}
+          <a href="{% url 'accounts:login' %}" class="block px-4 py-3 text-primary font-semibold">Connexion</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Spacer for fixed nav -->
+  <div class="h-20"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-50 dark:bg-dark-800 border-t border-gray-100 dark:border-white/5 py-12 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <!-- Footer logo -->
+        <div class="flex items-center">
+          <img src="{% static 'images/brand/logo.png' %}" alt="VIPET" class="h-16 w-16 object-contain" />
+        </div>
+
+        <!-- Footer links -->
+        <div class="flex items-center space-x-6 text-sm text-gray-500 dark:text-white/50">
+          <a href="{% url 'core:about' %}" class="hover:text-primary transition">À propos</a>
+          <a href="{% url 'services:service_list' %}" class="hover:text-primary transition">Services</a>
+          <a href="{% url 'contact:contact' %}" class="hover:text-primary transition">Contact</a>
+        </div>
+
+        <!-- Copyright -->
+        <p class="text-gray-400 dark:text-white/40 text-sm font-body">
+          &copy; 2026 VIPET. Tous droits réservés.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart badge Alpine component -->
+  <script>
+    function cartBadge() {
+      return {
+        count: 0,
+        total: '0',
+        fetchCart() {
+          fetch('/api/v1/cart/', {
+            headers: { 'Accept': 'application/json' },
+            credentials: 'same-origin'
+          })
+          .then(r => r.ok ? r.json() : null)
+          .then(data => {
+            if (data && data.items) {
+              this.count = data.items.length;
+              this.total = data.total_price || data.final_price || '0';
+            }
+          })
+          .catch(() => {});
+        }
+      };
+    }
+  </script>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
