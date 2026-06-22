@@ -9,7 +9,12 @@ Requirements: 17.2, 17.3, 17.4
 """
 
 from django.core.exceptions import ValidationError
-import magic  # python-magic — requires libmagic system library
+
+try:
+    import magic  # python-magic — requires libmagic system library
+except ImportError:
+    # Fallback: use mimetypes stdlib when python-magic is not available
+    magic = None  # type: ignore[assignment]
 
 # Only JPEG, PNG, and WebP are accepted across the platform.
 ALLOWED_MIME_TYPES = {"image/jpeg", "image/png", "image/webp"}
@@ -38,7 +43,14 @@ def validate_image_file(file, max_size_mb: int = 5) -> None:
     header = file.read(2048)
     file.seek(0)  # Reset pointer so subsequent reads (e.g. storage save) work.
 
-    mime = magic.from_buffer(header, mime=True)
+    if magic is not None:
+        mime = magic.from_buffer(header, mime=True)
+    else:
+        # Fallback: use mimetypes based on file name
+        import mimetypes
+        mime, _ = mimetypes.guess_type(getattr(file, 'name', ''))
+        if mime is None:
+            mime = "application/octet-stream"
 
     if mime not in ALLOWED_MIME_TYPES:
         raise ValidationError(

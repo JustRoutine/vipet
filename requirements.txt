@@ -23,8 +23,8 @@ Pillow>=10.4.0
 cloudinary>=1.41.0
 django-cloudinary-storage>=0.3.0
 
-# MIME type detection (python-magic-bin includes pre-built libmagic for Linux)
-python-magic-bin>=0.4.14
+# MIME type detection (optional — uses file command on Linux)
+# python-magic is not needed; Pillow + mimetypes stdlib handles file validation
 
 # Environment variable management
 python-decouple>=3.8
