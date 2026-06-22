@@ -7,7 +7,7 @@
 Django>=5.0,<5.2
 
 # Database
-mysqlclient>=2.2.4
+# mysqlclient>=2.2.4  # Only needed for local MySQL development
 
 # REST API
 djangorestframework>=3.15.2
@@ -23,12 +23,8 @@ Pillow>=10.4.0
 cloudinary>=1.41.0
 django-cloudinary-storage>=0.3.0
 
-# MIME type detection
-# NOTE: On macOS, libmagic must be installed first:
-#   brew install libmagic
-# If libmagic is unavailable, install 'python-magic-bin' instead (Windows/macOS pre-built):
-#   python-magic-bin>=0.4.14
-python-magic>=0.4.27
+# MIME type detection (python-magic-bin includes pre-built libmagic for Linux)
+python-magic-bin>=0.4.14
 
 # Environment variable management
 python-decouple>=3.8
