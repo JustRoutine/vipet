@@ -108,23 +108,52 @@ TEMPLATES = [
 WSGI_APPLICATION = "vipet.wsgi.application"
 
 # ---------------------------------------------------------------------------
-# Database — MySQL 8+, credentials from environment / .env
+# Database — Uses DATABASE_URL if available (PostgreSQL on Railway/Render),
+# otherwise falls back to MySQL 8+ from environment variables.
 # Override ENGINE to sqlite3 in development.py for local use without MySQL.
 # ---------------------------------------------------------------------------
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME":     decouple_config("DB_NAME",     default="vipet_db"),
-        "USER":     decouple_config("DB_USER",     default="root"),
-        "PASSWORD": decouple_config("DB_PASSWORD", default=""),
-        "HOST":     decouple_config("DB_HOST",     default="127.0.0.1"),
-        "PORT":     decouple_config("DB_PORT",     default="3306"),
-        "OPTIONS": {
-            "charset": "utf8mb4",
-            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+_database_url = os.getenv("DATABASE_URL")
+
+if _database_url:
+    try:
+        import dj_database_url
+        DATABASES = {
+            "default": dj_database_url.config(
+                default=_database_url,
+                conn_max_age=600,
+            )
+        }
+    except ImportError:
+        # dj-database-url not installed — fall through to MySQL config
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.mysql",
+                "NAME":     decouple_config("DB_NAME",     default="vipet_db"),
+                "USER":     decouple_config("DB_USER",     default="root"),
+                "PASSWORD": decouple_config("DB_PASSWORD", default=""),
+                "HOST":     decouple_config("DB_HOST",     default="127.0.0.1"),
+                "PORT":     decouple_config("DB_PORT",     default="3306"),
+                "OPTIONS": {
+                    "charset": "utf8mb4",
+                    "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+                },
+            }
+        }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME":     decouple_config("DB_NAME",     default="vipet_db"),
+            "USER":     decouple_config("DB_USER",     default="root"),
+            "PASSWORD": decouple_config("DB_PASSWORD", default=""),
+            "HOST":     decouple_config("DB_HOST",     default="127.0.0.1"),
+            "PORT":     decouple_config("DB_PORT",     default="3306"),
+            "OPTIONS": {
+                "charset": "utf8mb4",
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
     }
-}
 
 # ---------------------------------------------------------------------------
 # Custom user model
