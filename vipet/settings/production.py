@@ -19,7 +19,7 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
 # ---------------------------------------------------------------------------
 # Database — PostgreSQL via DATABASE_URL (Railway/Render provide this)
-# Falls back to MySQL if DATABASE_URL not set.
+# Falls back to SQLite if DATABASE_URL not set (safe default, no extra deps).
 # ---------------------------------------------------------------------------
 DATABASE_URL = os.getenv("DATABASE_URL")
 
@@ -34,15 +34,8 @@ if DATABASE_URL:
 else:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "NAME": os.getenv("DB_NAME", "vipet"),
-            "USER": os.getenv("DB_USER", "vipet_user"),
-            "PASSWORD": os.getenv("DB_PASSWORD", ""),
-            "HOST": os.getenv("DB_HOST", "localhost"),
-            "PORT": os.getenv("DB_PORT", "3306"),
-            "OPTIONS": {
-                "charset": "utf8mb4",
-            },
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",  # type: ignore[name-defined]  # noqa: F405
         }
     }
 
