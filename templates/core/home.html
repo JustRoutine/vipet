@@ -4,14 +4,22 @@
 {% block title %}VIPET — Hôtel de Luxe pour Animaux{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+<!-- Hero Section - Slider -->
 <section class="relative overflow-hidden py-0">
-  <!-- Hero Image with overlay -->
-  <div class="relative h-[75vh] sm:h-[90vh] min-h-[500px]">
-    <img src="{% static 'images/brand/HEROBANNER.png' %}" alt="VIPET Luxury Pet Hotel"
-         class="absolute inset-0 w-full h-full object-cover object-[center_30%] sm:object-center" />
+  <div class="relative h-[75vh] sm:h-[90vh] min-h-[500px]" x-data="{ current: 0, slides: 2 }" x-init="setInterval(() => current = (current + 1) % slides, 5000)">
+
+    <!-- Slide 1 -->
+    <img src="{% static 'images/brand/HEROBANNER1.png' %}" alt="VIPET Luxury Pet Hotel"
+         class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000"
+         :class="current === 0 ? 'opacity-100' : 'opacity-0'" />
+
+    <!-- Slide 2 -->
+    <img src="{% static 'images/brand/HEROBANNER2.png' %}" alt="VIPET Luxury Pet Hotel"
+         class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000"
+         :class="current === 1 ? 'opacity-100' : 'opacity-0'" />
+
+    <!-- Overlay -->
     <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 sm:from-black/40 sm:via-black/20 sm:to-black/60"></div>
-    <!-- Dark mode overlay adjustment -->
     <div class="absolute inset-0 bg-black/0 dark:bg-black/30"></div>
 
     <div class="relative z-10 h-full flex flex-col items-center justify-center px-6 sm:px-6 lg:px-8 text-center">
@@ -40,8 +48,14 @@
       </div>
     </div>
 
+    <!-- Slide indicators -->
+    <div class="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+      <button @click="current = 0" :class="current === 0 ? 'bg-primary w-8' : 'bg-white/50 w-3'" class="h-3 rounded-full transition-all duration-300"></button>
+      <button @click="current = 1" :class="current === 1 ? 'bg-primary w-8' : 'bg-white/50 w-3'" class="h-3 rounded-full transition-all duration-300"></button>
+    </div>
+
     <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
       <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
       </svg>
