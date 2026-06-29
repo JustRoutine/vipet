@@ -7,34 +7,34 @@
 <!-- Hero Section -->
 <section class="relative overflow-hidden py-0">
   <!-- Hero Image with overlay -->
-  <div class="relative h-[90vh] min-h-[600px]">
+  <div class="relative h-[100vh] sm:h-[90vh] min-h-[600px]">
     <img src="{% static 'images/brand/HEROBANNER.png' %}" alt="VIPET Luxury Pet Hotel"
-         class="absolute inset-0 w-full h-full object-cover" />
-    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60"></div>
+         class="absolute inset-0 w-full h-full object-cover object-center sm:object-top" />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 sm:from-black/40 sm:via-black/20 sm:to-black/60"></div>
     <!-- Dark mode overlay adjustment -->
     <div class="absolute inset-0 bg-black/0 dark:bg-black/30"></div>
 
-    <div class="relative z-10 h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center">
+    <div class="relative z-10 h-full flex flex-col items-center justify-center px-6 sm:px-6 lg:px-8 text-center">
       <!-- Heading -->
-      <h1 class="text-4xl sm:text-5xl lg:text-7xl font-heading font-bold text-white mb-6 animate-slide-up leading-tight drop-shadow-lg">
+      <h1 class="text-3xl sm:text-5xl lg:text-7xl font-heading font-bold text-white mb-4 sm:mb-6 animate-slide-up leading-tight drop-shadow-lg">
         Des soins de <span class="text-gradient">luxe</span><br />
         pour votre animal bien-aimé
       </h1>
 
       <!-- Subtitle -->
-      <p class="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-10 font-body font-light animate-slide-up drop-shadow" style="animation-delay: 0.2s;">
+      <p class="text-base sm:text-xl text-white/80 max-w-2xl mx-auto mb-8 sm:mb-10 font-body font-light animate-slide-up drop-shadow" style="animation-delay: 0.2s;">
         Découvrez des services hôteliers premium pour animaux au Maroc. Du toilettage et soins spa
         aux suites de luxe — votre animal mérite le meilleur.
       </p>
 
       <!-- CTA buttons -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style="animation-delay: 0.4s;">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 animate-slide-up w-full sm:w-auto" style="animation-delay: 0.4s;">
         <a href="{% url 'accounts:register' %}"
-           class="bg-primary hover:bg-primary-dark text-white font-semibold px-10 py-4 rounded-full text-lg transition-all duration-300 glow-pink hover:scale-105">
+           class="w-full sm:w-auto text-center bg-primary hover:bg-primary-dark text-white font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 glow-pink hover:scale-105">
           Rejoindre VIPET
         </a>
         <a href="{% url 'services:service_list' %}"
-           class="border border-white/40 hover:border-primary text-white hover:text-primary font-medium px-10 py-4 rounded-full text-lg transition-all duration-300 backdrop-blur-sm">
+           class="w-full sm:w-auto text-center border border-white/40 hover:border-primary text-white hover:text-primary font-medium px-8 sm:px-10 py-3.5 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 backdrop-blur-sm">
           Découvrir nos services
         </a>
       </div>
