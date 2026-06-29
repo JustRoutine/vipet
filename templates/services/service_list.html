@@ -51,13 +51,16 @@
               {% elif service.category == 'grooming' %}
                 <img src="{% static 'images/brand/toilettage.png' %}" alt="{{ service.name }}"
                      class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" />
-              {% elif service.category == 'boarding' %}
+              {% elif service.category == 'luxury_suite' %}
                 <img src="{% static 'images/brand/hebergement.png' %}" alt="{{ service.name }}"
                      class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" />
               {% elif service.category == 'spa' %}
                 <img src="{% static 'images/brand/spa.png' %}" alt="{{ service.name }}"
                      class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" />
               {% elif service.category == 'training' %}
+                <img src="{% static 'images/brand/dressage.png' %}" alt="{{ service.name }}"
+                     class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" />
+              {% elif service.category == 'daycare' %}
                 <img src="{% static 'images/brand/dressage.png' %}" alt="{{ service.name }}"
                      class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" />
               {% elif service.category == 'transport' %}
@@ -70,7 +73,7 @@
                 <img src="{% static 'images/brand/vet.png' %}" alt="{{ service.name }}"
                      class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" />
               {% else %}
-                <div class="w-full h-52 bg-gradient-to-br from-lightpink to-white dark:from-primary/10 dark:to-dark-700 flex items-center justify-center">
+                <div class="w-full h-52 bg-gradient-to-br from-primary/5 to-primary/20 dark:from-primary/10 dark:to-primary/5 flex items-center justify-center">
                   <span class="text-5xl">🐾</span>
                 </div>
               {% endif %}
